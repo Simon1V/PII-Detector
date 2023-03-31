@@ -1,7 +1,12 @@
 from piidetector import PIIDetector
+import sys 
 
-def main(): 
-	f = open("testcases.txt", "r") 
+def main():
+	if len(sys.argv) < 2: 
+		print("Syntax: main.py <filename>")
+		return -1 
+		
+	f = open(sys.argv[1], "r") 		
 	content = f.readlines()
 	f.close()
 	piiDetector = PIIDetector() 
