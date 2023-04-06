@@ -1,10 +1,10 @@
 import re 
 
-# SSN regex grabbed from: 
+# Adapted from 
 # https://www.geeksforgeeks.org/how-to-validate-ssn-social-security-number-using-regular-expression/
-# 
-
-	# Adapted from https://github.com/m4ll0k/SecretFinder/blob/master/BurpSuite-SecretFinder/SecretFinder.py
+# https://docs.opswat.com/mdcore/proactive-dlp/sample-regular-expressions
+# https://github.com/m4ll0k/SecretFinder/blob/master/BurpSuite-SecretFinder/SecretFinder.py
+	
 regexes = {
 	'google_api' : 'AIza[0-9A-Za-z-_]{35}',
 	'bitcoin_address' : '([13][a-km-zA-HJ-NP-Z0-9]{26,33})',
@@ -35,8 +35,12 @@ regexes = {
 	'ssh_dc_private_key' : '-----BEGIN EC PRIVATE KEY-----',
 	'pgp_private_block' : '-----BEGIN PGP PRIVATE KEY BLOCK-----',
 	'json_web_token' : 'ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*|ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*',
-	'social_security_number': '(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$' 
+	'social_security_number': '(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$', 
+	'e_mail' : r"(?:^|\s)[\w!#$%&'*+/=?^`{|}~-](\.?[\w!#$%&'*+/=?^`{|}~-])*@\w+[.-]?\w*\.[a-zA-Z]{2,3}\b"
+	
+	#'us_address': r'\d{1,5}(\s[\w+.,]*){1,6},\s[A-Z]{2}\s\d{5}\b'
     }
+	
 # Used to query the type later since that is more efficient than doing it dynamically. 	
 regexesInv = {
 	'AIza[0-9A-Za-z-_]{35}': 'google_api',
@@ -67,7 +71,9 @@ regexesInv = {
     '-----BEGIN DSA PRIVATE KEY-----': 'ssh_dsa_private_key',
 	'-----BEGIN PGP PRIVATE KEY BLOCK-----':'pgp_private_block',
 	'ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*|ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*':'json_web_token',
-	'(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$':'social_security_number'	
+	'(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$':'social_security_number', 
+	r"(?:^|\s)[\w!#$%&'*+/=?^`{|}~-](\.?[\w!#$%&'*+/=?^`{|}~-])*@\w+[.-]?\w*\.[a-zA-Z]{2,3}\b": "e_mail"
+	#r'\d{1,5}(\s[\w+.,]*){1,6},\s[A-Z]{2}\s\d{5}\b': 'us_address'
 	}
 	
 class PIIDetector: 
